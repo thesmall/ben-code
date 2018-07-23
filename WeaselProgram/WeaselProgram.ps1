@@ -4,7 +4,11 @@ https://en.wikipedia.org/wiki/Weasel_program
 
 Example:
 
-Start-WeaselProgram -InputString "ASDLFKJ ASDFASDF DFD  DDFFDL" -OutputString "METHINKS IT IS LIKE A WEASEL" -ReproductionsCount 100 -MutationRatePercent 5
+Start-WeaselProgram `
+    -InputString "ASDLFKJ ASDFASDF DFD  DDFFDL" `
+    -OutputString "METHINKS IT IS LIKE A WEASEL" `
+    -ReproductionsCount 100 `
+    -MutationRatePercent 5
 
 Round String                       CorrectMutations
 ----- ------                       ----------------
