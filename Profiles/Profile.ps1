@@ -67,8 +67,8 @@ else {
 $is64Bit = [System.Environment]::Is64BitProcess
 
 #Determine if the current user is running an administrative session.
-#Note of clarity. This is not a check to see if you are using an a-account.
-#Your a-account might be an administrator for a given system, however,
+#Note of clarity. This is not a check to see if you are using an Admin Account.
+#Your Admin Account might be an administrator for a given system, however,
 #this is not the same as running the current process in an administrative session.
 $wid = [System.Security.Principal.WindowsIdentity]::GetCurrent()
 $prp = New-Object System.Security.Principal.WindowsPrincipal($wid)
@@ -91,14 +91,14 @@ $gitName = "Ben Small"
 $gitEmail = "ben.small88@gmail.com"
 
 #Other Git Settings
-$gitColorStatusChanged = "red normal bold"
+$gitColorStatusChanged   = "red normal bold"
 $gitColorStatusUntracked = "red normal bold"
-$gitColorDiffNew = "green bold"
-$gitColorDiffOld = "red bold"
+$gitColorDiffNew         = "green bold"
+$gitColorDiffOld         = "red bold"
 
 #Specify fingerprint (aka SHA1 Hash) of personal Code Signing Certificates
-$aAccountCSCFingerprint = ""
-$nonPrivAccountCSCFingerprint =  ""
+$adminAccountCSCFingerprint  = ""
+$normalAccountCSCFingerprint = ""
 
 #Define default values for certain functions/parameters.
 $PSDefaultParameterValues = @{}
@@ -129,21 +129,22 @@ $execPathAdditions = @(
 
 #region Define Custom Aliases
 
-Set-Alias imo       Import-Module
-Set-Alias pssh		Connect-WinRMHost
-Set-Alias gpss		Get-PSSession
-Set-Alias rpss		Remove-PSSession
-Set-Alias version	Get-PsVersion
-Set-Alias gas		Get-AdapterSummary
-Set-Alias gpsd		Get-PSDrive
-Set-Alias asnapin   Add-PSSnapin
-Set-Alias rsnapin   Remove-PSSnapin
-Set-Alias tp		Test-Path
-Set-Alias ql		Quote-List
-Set-Alias ivh       Invoke-History
-Set-Alias push		Push-Location
-Set-Alias pop		Pop-Location
-Set-Alias grid      Out-GridView
+Set-Alias -Name 'imo'     -Value Import-Module
+Set-Alias -Name 'pssh'    -Value Connect-WinRMHost
+Set-Alias -Name 'gpss'    -Value Get-PSSession
+Set-Alias -Name 'rpss'    -Value Remove-PSSession
+Set-Alias -Name 'gas'     -Value Get-AdapterSummary
+Set-Alias -Name 'gpsd'    -Value Get-PSDrive
+Set-Alias -Name 'asnapin' -Value Add-PSSnapin
+Set-Alias -Name 'rsnapin' -Value Remove-PSSnapin
+Set-Alias -Name 'tp'      -Value Test-Path
+Set-Alias -Name 'ql'      -Value Quote-List
+Set-Alias -Name 'ivh'     -Value Invoke-History
+Set-Alias -Name 'push'    -Value Push-Location
+Set-Alias -Name 'pop'     -Value Pop-Location
+Set-Alias -Name 'grid'    -Value Out-GridView
+Set-Alias -Name 'tnc'     -Value Test-NetConnection
+Set-Alias -Name 'tc'      -Value Test-Connection
 
 #endregion
 
@@ -298,13 +299,13 @@ foreach ( $epa in $execPathAdditions ) {
 $tss = "http://timestamp.comodoca.com/authenticode"
 
 if ($adminAccountInUse) {
-    if ($aAccountCSCFingerprint) {
-	    $myCSCThumbprint = $aAccountCSCFingerprint
+    if ($adminAccountCSCFingerprint) {
+	    $myCSCThumbprint = $adminAccountCSCFingerprint
     }
 }
 else {
-    if ($nonPrivAccountCSCFingerprint) {
-	    $myCSCThumbprint = $nonPrivAccountCSCFingerprint
+    if ($normalAccountCSCFingerprint) {
+	    $myCSCThumbprint = $normalAccountCSCFingerprint
     }
 }
 
@@ -405,7 +406,6 @@ if (-not $poshGitLoaded) {
 
 
 function prompt {
-
     $basePrompt = "$($env:USERDOMAIN.ToLower())\$env:USERNAME@$env:COMPUTERNAME"
 
     #Adding this function into prompt removes the psutils.psm1 dependency, allowing the Prompt to function even when the modules fail to load.
@@ -421,7 +421,7 @@ function prompt {
     [Console]::ResetColor()
 
     $oldVersionPromptColor = 'Magenta'
-    $caretPromptColor = 'White'
+    $caretPromptColor      = 'White'
 
     #determine 64/32-bit for Window Title
     if ($is64Bit) {
@@ -437,11 +437,11 @@ function prompt {
     #define admin-specific variables
     if ($isAdmin) {
         $currentVersionPromptColor = 'Red'
-        $adminWindowTitle = "Admin: "
+        $adminWindowTitle          = "Admin: "
     }
     else {
         $currentVersionPromptColor = 'Green'
-        $adminWindowTitle = $null
+        $adminWindowTitle          = $null
     }
 
     $Host.UI.RawUI.WindowTitle = $adminWindowTitle + $tempWindowTitle
@@ -454,7 +454,6 @@ function prompt {
     Write-Host ""
 
     switch (Get-PSVersion) {
-        "2.0" { Write-Host "v2.0 " -NoNewline -ForegroundColor $oldVersionPromptColor }
         "3.0" { Write-Host "v3.0 " -NoNewline -ForegroundColor $oldVersionPromptColor }
         "4.0" { Write-Host "v4.0 " -NoNewline -ForegroundColor $oldVersionPromptColor }
         "5.0" { Write-Host "v5.0 " -NoNewline -ForegroundColor $oldVersionPromptColor }
