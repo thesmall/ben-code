@@ -458,6 +458,7 @@ function prompt {
         "4.0" { Write-Host "v4.0 " -NoNewline -ForegroundColor $oldVersionPromptColor }
         "5.0" { Write-Host "v5.0 " -NoNewline -ForegroundColor $oldVersionPromptColor }
         "5.1" { Write-Host "v5.1 " -NoNewline -ForegroundColor $currentVersionPromptColor }
+        "6.1" { Write-Host "v5.1 " -NoNewline -ForegroundColor $currentVersionPromptColor }
         default { Write-Host "v? $(Get-PSVersion)" -NoNewline -ForegroundColor $oldVersionPromptColor }
     }
 
