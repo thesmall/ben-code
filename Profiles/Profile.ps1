@@ -3,29 +3,8 @@
 #if a transcript was running, stop it, import/re-import the profile and then start it (further down)
 $oldEAP = $ErrorActionPreference
 $ErrorActionPreference = 'SilentlyContinue'
-Stop-Transcript -ErrorAction SilentlyContinue
+Stop-Transcript -ErrorAction 'SilentlyContinue'
 $ErrorActionPreference = $oldEAP
-
-#endregion
-
-#region Determine if the User is running the process with their Admin Account
-
-switch ($true) {
-	($env:USERNAME -match 'a-') {
-		$normalUser = $env:USERNAME.Replace('a-','')
-		$adminAccountInUse = $true
-        Write-Host "Admin Account in Use." -ForegroundColor Red
-        Write-Host ""
-        break
-	}
-    default {
-        $normalUser = $env:USERNAME
-        $adminAccountInUse = $false
-        Write-Host "Normal Account in Use." -ForegroundColor Green
-        Write-Host ""
-        break
-    }
-}
 
 #endregion
 
@@ -41,22 +20,22 @@ Write-Host $psProfilePath -ForegroundColor Cyan
 #Here, we test that the variable has indeed been set and that it points to a valid path.
 if ( ($Global:WorkingPath) -and (Test-Path $Global:WorkingPath) ) {
 	Write-Host 'Using ' -NoNewline
-    Write-Host '$Global:WorkingPath' -ForegroundColor Cyan
+    Write-Host '$Global:WorkingPath' -ForegroundColor 'Cyan'
 	$working = $Global:WorkingPath
 }
 #Failing either test, let's take a crack at guessing
 else {
-	Write-Host 'Using guess for $working based on relative location of profile script.' -NoNewline -ForegroundColor Yellow
+	Write-Host 'Using guess for $working based on relative location of profile script.' -NoNewline -ForegroundColor 'Yellow'
 	$working = Split-Path (Split-Path ((Split-Path $psProfilePath)))
 }
 
 #Inform the user whether or not the working folder was found
 if (Test-Path $working) {
 	Write-Host 'Working Directory ($working): ' -NoNewline
-	Write-Host $working -ForegroundColor Cyan
+	Write-Host $working -ForegroundColor 'Cyan'
 }
 else {
-	Write-Host 'Working Directory ($working) not found:' $working -ForegroundColor Red
+	Write-Host 'Working Directory ($working) not found:' $working -ForegroundColor 'Red'
 }
 
 #endregion
@@ -81,9 +60,9 @@ $isAdmin = $prp.IsInRole($adm)
 
 #Banner
 Write-Host
-Write-Host "**************************************" -ForegroundColor Red
-Write-Host "****ALL YOUR BASE ARE BELONG TO US****" -ForegroundColor Red
-Write-Host "**************************************" -ForegroundColor Red
+Write-Host "****************************************" -ForegroundColor 'Red'
+Write-Host "**** ALL YOUR BASE ARE BELONG TO US ****" -ForegroundColor 'Red'
+Write-Host "****************************************" -ForegroundColor 'Red'
 Write-Host
 
 #Git Name & Email
@@ -104,7 +83,12 @@ $normalAccountCSCFingerprint = ""
 $PSDefaultParameterValues = @{}
 
 #PowerShell.exe Window Title
-$baseWindowTitle = "$($env:USERDOMAIN.ToLower())\$env:USERNAME@$env:COMPUTERNAME | PID:$pid"
+if ($env:USERDOMAIN -eq $env:COMPUTERNAME) {
+    $baseWindowTitle = "$env:USERNAME@$env:COMPUTERNAME | $pid"
+}
+else {
+    $baseWindowTitle = "$($env:USERDOMAIN.ToLower())\$env:USERNAME@$env:COMPUTERNAME | $pid"
+}
 
 #Root Path for PSTranscripts
 $transcriptRoot = "$working\PSTranscripts"
@@ -129,22 +113,14 @@ $execPathAdditions = @(
 
 #region Define Custom Aliases
 
-Set-Alias -Name 'imo'     -Value Import-Module
-Set-Alias -Name 'pssh'    -Value Connect-WinRMHost
-Set-Alias -Name 'gpss'    -Value Get-PSSession
-Set-Alias -Name 'rpss'    -Value Remove-PSSession
-Set-Alias -Name 'gas'     -Value Get-AdapterSummary
-Set-Alias -Name 'gpsd'    -Value Get-PSDrive
-Set-Alias -Name 'asnapin' -Value Add-PSSnapin
-Set-Alias -Name 'rsnapin' -Value Remove-PSSnapin
-Set-Alias -Name 'tp'      -Value Test-Path
-Set-Alias -Name 'ql'      -Value Quote-List
-Set-Alias -Name 'ivh'     -Value Invoke-History
-Set-Alias -Name 'push'    -Value Push-Location
-Set-Alias -Name 'pop'     -Value Pop-Location
-Set-Alias -Name 'grid'    -Value Out-GridView
-Set-Alias -Name 'tnc'     -Value Test-NetConnection
-Set-Alias -Name 'tc'      -Value Test-Connection
+Set-Alias -Name 'imo'  -Value 'Import-Module'
+Set-Alias -Name 'pssh' -Value 'Enter-PsSession'
+Set-Alias -Name 'ivh'  -Value 'Invoke-History'
+Set-Alias -Name 'push' -Value 'Push-Location'
+Set-Alias -Name 'pop'  -Value 'Pop-Location'
+Set-Alias -Name 'grid' -Value 'Out-GridView'
+Set-Alias -Name 'tnc'  -Value 'Test-NetConnection'
+Set-Alias -Name 'tc'   -Value 'Test-Connection'
 
 #endregion
 
@@ -154,7 +130,7 @@ foreach ($mod in $modulesToImport) {
     $moduleLeaf = Split-Path $mod -Leaf
 
     Write-Host "Importing Module: " -NoNewline
-    Write-Host "$($moduleLeaf.Replace('.psm1','').Replace('.psd1',''))" -ForegroundColor Cyan
+    Write-Host "$($moduleLeaf.Replace('.psm1','').Replace('.psd1',''))" -ForegroundColor 'Cyan'
     Import-Module $mod -DisableNameChecking
 }
 Write-Host
@@ -165,7 +141,7 @@ foreach ($dotscript in $scriptsToImport) {
     $scriptLeaf = Split-Path $dotscript -Leaf
 
     Write-Host "Importing Script: " -NoNewline
-    Write-Host "$($scriptLeaf.Replace('.ps1',''))" -ForegroundColor Cyan
+    Write-Host "$($scriptLeaf.Replace('.ps1',''))" -ForegroundColor 'Cyan'
     . $dotscript
 }
 Write-Host
@@ -174,91 +150,20 @@ Write-Host
 
 #region Add PSDrives for the remaining Registry Hives.
 
-$null = New-PSDrive -Name HKU  -PSProvider Registry -Root Registry::HKEY_USERS          -ErrorAction SilentlyContinue
-$null = New-PSDrive -Name HKCR -PSProvider Registry -Root Registry::HKEY_CLASSES_ROOT   -ErrorAction SilentlyContinue
-$null = New-PSDrive -Name HKCC -PSProvider Registry -Root Registry::HKEY_CURRENT_CONFIG -ErrorAction SilentlyContinue
+$null = New-PSDrive -Name HKU  -PSProvider 'Registry' -Root Registry::HKEY_USERS          -ErrorAction 'SilentlyContinue'
+$null = New-PSDrive -Name HKCR -PSProvider 'Registry' -Root Registry::HKEY_CLASSES_ROOT   -ErrorAction 'SilentlyContinue'
+$null = New-PSDrive -Name HKCC -PSProvider 'Registry' -Root Registry::HKEY_CURRENT_CONFIG -ErrorAction 'SilentlyContinue'
 
 #endregion
 
-#region Define Custom Functions
-#Define any custom functions that aren't substantial enough to warrant their own script file.
+#region Load Custom Functions
 
-function Quote-List { $args }
-
-Function Format-DiskSize {
-    [cmdletbinding()]
-    Param (
-        [Long] $Type
-    )
-    If ($Type -ge 1TB)     {[string]::Format("{0:0.00} TB", $Type / 1TB)}
-    ElseIf ($Type -ge 1GB) {[string]::Format("{0:0.00} GB", $Type / 1GB)}
-    ElseIf ($Type -ge 1MB) {[string]::Format("{0:0.00} MB", $Type / 1MB)}
-    ElseIf ($Type -ge 1KB) {[string]::Format("{0:0.00} KB", $Type / 1KB)}
-    ElseIf ($Type -gt 0)   {[string]::Format("{0:0.00} Bytes", $Type)}
-    Else {""}
+try {
+    write-host "$PSScriptRoot\functions.ps1"
+    . "$PSScriptRoot\functions.ps1"
 }
-
-function Tail-LogFile {
-    param(
-        [String] $Path
-    )
-    if (Test-Path $Path) {
-        Get-Content -Path $Path -Tail 1 -Wait
-    }
-    else {
-        Write-Error "Unable to Get-Content from $Path. Does it exist?" -Category InvalidArgument
-    }
-}
-function Search-PSTranscript {
-    [CmdletBinding()]
-    param(
-        [String] $Path,
-
-        [String] $Pattern
-    )
-
-    Begin {
-
-    }
-
-    Process {
-        $transcriptFiles = Get-ChildItem $Path
-
-        foreach ($t in $transcriptFiles) {
-            $matchingContent = Get-Content $t.FullName | Select-String -SimpleMatch $Pattern | Sort-Object
-
-            if ($matchingContent) {
-                [pscustomobject] @{
-                    File = $t
-                    Matches = @($matchingContent)
-                }
-            }
-        }
-    }
-
-    End {
-
-    }
-}
-
-#Remaps the cd alias to a new function that improves functionality in Set-Location
-#Can cd to the previous directory by typing 'cd -'
-Remove-Item Alias:cd -ErrorAction SilentlyContinue
-function cd {
-    if ($args[0] -eq '-') {
-        $pwd = $OLDPWD
-    }
-    else {
-        $pwd = $args[0]
-    }
-
-    $tmp = Get-Location
-
-    if ($pwd) {
-        Set-Location $pwd
-    }
-
-    Set-Variable -Name OLDPWD -Value $tmp -Scope global
+catch {
+    throw
 }
 
 #endregion
@@ -310,7 +215,8 @@ else {
 }
 
 if ($myCSCThumbprint) {
-    $mycert = Get-ChildItem "Cert:\CurrentUser\My" | Where-Object { $_.Thumbprint -eq $myCSCThumbprint }
+    $mycert = Get-ChildItem "Cert:\CurrentUser\My" | 
+        Where-Object { $_.Thumbprint -eq $myCSCThumbprint }
 }
 
 #endregion
@@ -338,7 +244,7 @@ switch ($true) {
     #Using VSCode
     ($host.Name -eq "Visual Studio Code Host") {
         Write-Host
-        Write-Host "VSCode Host detected." -ForegroundColor Green
+        Write-Host "VSCode Host detected." -ForegroundColor 'Green'
         Write-Host
         break
     }
@@ -346,7 +252,7 @@ switch ($true) {
     #Not using the ISE e.g. the Console.
     ((-not $psISE) -and (-not $host.PrivateData.ProductTitle)) {
         Write-Host
-        Write-Host "PowerShell Console detected." -ForegroundColor Green
+        Write-Host "PowerShell Console detected." -ForegroundColor 'Green'
         Write-Host
         break
     }
@@ -354,7 +260,7 @@ switch ($true) {
     #Using PowerShellISE
     ($iseStatus) {
         Write-Host
-        Write-Host "PowerShellISE detected." -ForegroundColor Green
+        Write-Host "PowerShellISE detected." -ForegroundColor 'Green'
         Write-Host
         break
     }
@@ -406,7 +312,12 @@ if (-not $poshGitLoaded) {
 
 
 function prompt {
-    $basePrompt = "$($env:USERDOMAIN.ToLower())\$env:USERNAME@$env:COMPUTERNAME"
+    if ($env:USERDOMAIN -eq $env:COMPUTERNAME) {
+        $basePrompt = "$env:USERNAME@$env:COMPUTERNAME"
+    }
+    else {
+        $basePrompt = "$($env:USERDOMAIN.ToLower())\$env:USERNAME@$env:COMPUTERNAME"
+    }
 
     #Adding this function into prompt removes the psutils.psm1 dependency, allowing the Prompt to function even when the modules fail to load.
     function Get-PSVersion {
@@ -447,7 +358,7 @@ function prompt {
     $Host.UI.RawUI.WindowTitle = $adminWindowTitle + $tempWindowTitle
 
     Write-Host ""
-    Write-Host (Get-Date -Format "yyyy-MM-dd HH:mm:ss zzz") -NoNewline -ForegroundColor Cyan
+    Write-Host (Get-Date -Format "yyyy-MM-dd HH:mm:ss zzz") -NoNewline -ForegroundColor 'Cyan'
     Write-Host " $basePrompt" -ForegroundColor DarkCyan
     Write-Host $PWD -NoNewline -ForegroundColor White
     if ($poshGitLoaded) { Write-VcsStatus }
@@ -458,8 +369,9 @@ function prompt {
         "4.0" { Write-Host "v4.0 " -NoNewline -ForegroundColor $oldVersionPromptColor }
         "5.0" { Write-Host "v5.0 " -NoNewline -ForegroundColor $oldVersionPromptColor }
         "5.1" { Write-Host "v5.1 " -NoNewline -ForegroundColor $currentVersionPromptColor }
-        "6.1" { Write-Host "v5.1 " -NoNewline -ForegroundColor $currentVersionPromptColor }
-        default { Write-Host "v? $(Get-PSVersion)" -NoNewline -ForegroundColor $oldVersionPromptColor }
+        "6.1" { Write-Host "v6.1 " -NoNewline -ForegroundColor $oldVersionPromptColor }
+        "7.0" { Write-Host "v7.0 " -NoNewline -ForegroundColor $currentVersionPromptColor }
+        default { Write-Host "v$(Get-PSVersion)" -NoNewline -ForegroundColor $oldVersionPromptColor }
     }
 
     Write-Host ">"  -NoNewline -ForegroundColor $caretPromptColor
