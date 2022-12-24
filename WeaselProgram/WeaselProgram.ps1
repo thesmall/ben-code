@@ -176,7 +176,7 @@ function Start-WeaselProgram {
                 Sort-Object CorrectMutations |
                     Select-Object -Last 1
 
-            #Print out the
+            #Print out the winning spawn.
             Write-Output $winningSpawn
 
             $InputString = $winningSpawn.String
