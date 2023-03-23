@@ -1,6 +1,6 @@
 # Get public and private function definition files.
-$public  = @(Get-ChildItem -Path $PSScriptRoot\Public\*.ps1  -ErrorAction SilentlyContinue)
-$private = @(Get-ChildItem -Path $PSScriptRoot\Private\*.ps1 -ErrorAction SilentlyContinue)
+$public  = @(Get-ChildItem -Path $PSScriptRoot\Public\*.ps1  -ErrorAction 'SilentlyContinue')
+$private = @(Get-ChildItem -Path $PSScriptRoot\Private\*.ps1 -ErrorAction 'SilentlyContinue')
 
 # Dot source the files
 foreach ($file in @($public + $private)) {
@@ -14,5 +14,10 @@ foreach ($file in @($public + $private)) {
 
 # Export Public functions
 Export-ModuleMember `
-    -Function $Public.Basename `
-    -Alias 'rsm'
+    -Function $Public.BaseName `
+    -Alias @(
+        'psh'
+        'pshistory'
+        'rsm'
+        'Search-PSTranscript'
+    )

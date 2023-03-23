@@ -149,4 +149,4 @@ function Reset-Module {
     }
 }
 
-New-Alias -Name rsm -Value Reset-Module -ErrorAction SilentlyContinue
+New-Alias -Name 'rsm' -Value 'Reset-Module' -ErrorAction 'SilentlyContinue'

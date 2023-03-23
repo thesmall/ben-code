@@ -24,40 +24,6 @@ function Tail-LogFile {
     }
 }
 
-function Search-PSTranscript {
-    [CmdletBinding()]
-    param(
-        [String] $Path,
-
-        [String] $Pattern
-    )
-
-    begin {
-
-    }
-
-    process {
-        $transcriptFiles = Get-ChildItem $Path
-
-        foreach ($t in $transcriptFiles) {
-            $matchingContent = Get-Content $t.FullName | 
-                Select-String -SimpleMatch $Pattern | 
-                    Sort-Object
-
-            if ($matchingContent) {
-                [pscustomobject] @{
-                    File = $t
-                    Matches = @($matchingContent)
-                }
-            }
-        }
-    }
-
-    end {
-
-    }
-}
-
 #Can cd to the previous directory by typing 'cd -'
 Remove-Item Alias:cd -ErrorAction 'SilentlyContinue'
 function cd {

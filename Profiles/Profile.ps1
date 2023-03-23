@@ -19,23 +19,23 @@ Write-Host $psProfilePath -ForegroundColor Cyan
 #to the directory containing working directories for GIT projects.
 #Here, we test that the variable has indeed been set and that it points to a valid path.
 if ( ($Global:WorkingPath) -and (Test-Path $Global:WorkingPath) ) {
-	Write-Host 'Using ' -NoNewline
+    Write-Host 'Using ' -NoNewline
     Write-Host '$Global:WorkingPath' -ForegroundColor 'Cyan'
-	$working = $Global:WorkingPath
+    $working = $Global:WorkingPath
 }
 #Failing either test, let's take a crack at guessing
 else {
-	Write-Host 'Using guess for $working based on relative location of profile script.' -NoNewline -ForegroundColor 'Yellow'
-	$working = Split-Path (Split-Path ((Split-Path $psProfilePath)))
+    Write-Host 'Using guess for $working based on relative location of profile script.' -NoNewline -ForegroundColor 'Yellow'
+    $working = Split-Path (Split-Path ((Split-Path $psProfilePath)))
 }
 
 #Inform the user whether or not the working folder was found
 if (Test-Path $working) {
-	Write-Host 'Working Directory ($working): ' -NoNewline
-	Write-Host $working -ForegroundColor 'Cyan'
+    Write-Host 'Working Directory ($working): ' -NoNewline
+    Write-Host $working -ForegroundColor 'Cyan'
 }
 else {
-	Write-Host 'Working Directory ($working) not found:' $working -ForegroundColor 'Red'
+    Write-Host 'Working Directory ($working) not found:' $working -ForegroundColor 'Red'
 }
 
 #endregion
@@ -75,10 +75,6 @@ $gitColorStatusUntracked = "red normal bold"
 $gitColorDiffNew         = "green bold"
 $gitColorDiffOld         = "red bold"
 
-#Specify fingerprint (aka SHA1 Hash) of personal Code Signing Certificates
-$adminAccountCSCFingerprint  = ""
-$normalAccountCSCFingerprint = ""
-
 #Define default values for certain functions/parameters.
 $PSDefaultParameterValues = @{}
 
@@ -91,10 +87,11 @@ else {
 }
 
 #Root Path for PSTranscripts
-$transcriptRoot = "$working\PSTranscripts"
+$transcriptRoot = "$working\pstranscripts"
 
 $modulesToImport = @(
     "posh-git"
+    'C:\working\git\PowerShell\powershellUtils\powershellUtils.psd1'
 )
 
 $scriptsToImport = @()
@@ -107,8 +104,15 @@ $modulePathAdditions = @()
 
 
 $execPathAdditions = @(
-	'C:\Program Files\Notepad++'
-	'C:\Program Files (x86)\SysInternals'
+    'C:\Program Files\Notepad++'
+    'C:\Program Files\SysInternals'
+
+    'C:\working\tools\bitwarden-cli'
+    'C:\working\tools\caffeine'
+    'C:\working\tools\mkvtoolnix'
+    'C:\working\tools\USBLogView'
+    'C:\working\tools\wiztree'
+    'C:\working\tools\HWiNFO'
 )
 
 #region Define Custom Aliases
@@ -173,11 +177,11 @@ catch {
 #region Append Supplementary Module Paths to $ENV:PSModulePath
 
 foreach ($mpa in $modulePathAdditions) {
-	if (-not ($Env:PSModulePath.Split(';') -contains $mpa)) {
-		Write-Host "Appending to `$Env:PSModulePath: " -NoNewline
-		Write-Host "`"$mpa`""-ForegroundColor Cyan
-		$Env:PSModulePath += ";$mpa"
-	}
+    if (-not ($Env:PSModulePath.Split(';') -contains $mpa)) {
+        Write-Host "Appending to `$Env:PSModulePath: " -NoNewline
+        Write-Host "`"$mpa`""-ForegroundColor Cyan
+        $Env:PSModulePath += ";$mpa"
+    }
 }
 
 #endregion
@@ -186,10 +190,10 @@ foreach ($mpa in $modulePathAdditions) {
 
 foreach ( $epa in $execPathAdditions ) {
     if ( -not ($Env:Path.Split(';') -contains $epa) ) {
-		Write-Host "Appending to `$Env:Path: " -NoNewline
-		Write-Host "`"$epa`""-ForegroundColor Cyan
-		$Env:Path += ";$epa"
-	}
+        Write-Host "Appending to `$Env:Path: " -NoNewline
+        Write-Host "`"$epa`""-ForegroundColor Cyan
+        $Env:Path += ";$epa"
+    }
 }
 
 #endregion
@@ -198,29 +202,6 @@ foreach ( $epa in $execPathAdditions ) {
 
 #####################################################################
 
-#region Set code-signing certificate variables
-
-#These vars are used by Set-MySignature in the authenticode module
-$tss = "http://timestamp.comodoca.com/authenticode"
-
-if ($adminAccountInUse) {
-    if ($adminAccountCSCFingerprint) {
-	    $myCSCThumbprint = $adminAccountCSCFingerprint
-    }
-}
-else {
-    if ($normalAccountCSCFingerprint) {
-	    $myCSCThumbprint = $normalAccountCSCFingerprint
-    }
-}
-
-if ($myCSCThumbprint) {
-    $mycert = Get-ChildItem "Cert:\CurrentUser\My" | 
-        Where-Object { $_.Thumbprint -eq $myCSCThumbprint }
-}
-
-#endregion
-
 #region Run Once on Console Start
 #Here we run code that the we don't want re-run if the
 #profile config is reloaded in the current session.
@@ -228,8 +209,8 @@ if ($myCSCThumbprint) {
 if (-not $profileLoaded) {
     Write-Host
 
-	#Only change to home path if this is a new shell
-	if (Test-Path $Working) { Set-Location $Working }
+    #Only change to home path if this is a new shell
+    if (Test-Path $Working) { Set-Location $Working }
 }
 #endregion
 
@@ -275,7 +256,7 @@ if (-not $poshGitLoaded) {
     if ((Get-Module Posh-Git -ErrorAction SilentlyContinue) -and (($env:USERNAME -eq "ben") -or ($env:USERNAME -eq "a-ben")) ) {
 
         #region Define Posh Git Settings
-        $GitPromptSettings.EnableWindowTitle = $null
+        $GitPromptSettings.WindowTitle = $null
         #endregion
 
         #region User Config
@@ -319,20 +300,18 @@ function prompt {
         $basePrompt = "$($env:USERDOMAIN.ToLower())\$env:USERNAME@$env:COMPUTERNAME"
     }
 
-    #Adding this function into prompt removes the psutils.psm1 dependency, allowing the Prompt to function even when the modules fail to load.
     function Get-PSVersion {
-	    <#
-	    .SYNOPSIS
-		    Provides a simple mechanism for getting the release version of the current PowerShell session
-	    #>
-	    $psVersion = ($PSVersionTable.PSVersion.Major).ToString() + '.' + ($PSVersionTable.PSVersion.Minor).ToString()
-	    Write-Output $psVersion
+        <#
+        .SYNOPSIS
+            Provides a simple mechanism for getting the release version of the current PowerShell session
+        #>
+        $psVersion = ($PSVersionTable.PSVersion.Major).ToString() + '.' + ($PSVersionTable.PSVersion.Minor).ToString()
+        Write-Output $psVersion
     }
 
     [Console]::ResetColor()
 
-    $oldVersionPromptColor = 'Magenta'
-    $caretPromptColor      = 'White'
+    $caretPromptColor = 'White'
 
     #determine 64/32-bit for Window Title
     if ($is64Bit) {
@@ -361,19 +340,8 @@ function prompt {
     Write-Host (Get-Date -Format "yyyy-MM-dd HH:mm:ss zzz") -NoNewline -ForegroundColor 'Cyan'
     Write-Host " $basePrompt" -ForegroundColor DarkCyan
     Write-Host $PWD -NoNewline -ForegroundColor White
-    if ($poshGitLoaded) { Write-VcsStatus }
-    Write-Host ""
-
-    switch (Get-PSVersion) {
-        "3.0" { Write-Host "v3.0 " -NoNewline -ForegroundColor $oldVersionPromptColor }
-        "4.0" { Write-Host "v4.0 " -NoNewline -ForegroundColor $oldVersionPromptColor }
-        "5.0" { Write-Host "v5.0 " -NoNewline -ForegroundColor $oldVersionPromptColor }
-        "5.1" { Write-Host "v5.1 " -NoNewline -ForegroundColor $currentVersionPromptColor }
-        "6.1" { Write-Host "v6.1 " -NoNewline -ForegroundColor $oldVersionPromptColor }
-        "7.0" { Write-Host "v7.0 " -NoNewline -ForegroundColor $currentVersionPromptColor }
-        default { Write-Host "v$(Get-PSVersion)" -NoNewline -ForegroundColor $oldVersionPromptColor }
-    }
-
+    if ($poshGitLoaded) { Write-Host "$(Write-VcsStatus)" }
+    Write-Host "v$(Get-PSVersion) " -NoNewline -ForegroundColor $currentVersionPromptColor 
     Write-Host ">"  -NoNewline -ForegroundColor $caretPromptColor
     return " "
 }
@@ -383,9 +351,9 @@ function prompt {
 #region Start a Transcript
 
 if ($iseStatus) {
-    $ISETab = $psISE.CurrentPowerShellTab.DisplayName.Replace(" ",'').Replace("PowerShell","PSTab")
+    $iseTab = $psISE.CurrentPowerShellTab.DisplayName.Replace(" ",'').Replace("PowerShell","PSTab")
 
-    $transcriptPath = Join-Path $transcriptRoot "$env:USERNAME`_$env:COMPUTERNAME`_ISE-$ISETab`_$(Get-Date -Format yyyy.MM.dd).txt"
+    $transcriptPath = Join-Path $transcriptRoot "$env:USERNAME`_$env:COMPUTERNAME`_ISE-$iseTab`_$(Get-Date -Format yyyy.MM.dd).txt"
     #Start-Transcript -Path $transcriptPath -Confirm:$false -Append
 }
 elseif ($host.Name -eq "Visual Studio Code Host") {
@@ -399,5 +367,5 @@ else {
 
 #endregion
 
-#Set variable to indicated the profile has completed its initial load
+#Set variable to indicate the profile has completed its initial load
 $profileLoaded = $true

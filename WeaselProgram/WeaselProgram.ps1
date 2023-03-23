@@ -87,7 +87,7 @@ function Start-WeaselProgram {
         [Int] $MutationsRatePercent = 5
     )
 
-    Begin {
+    begin {
 
         $CHARACTER_SET = @(
             "A","B","C","D","E","F","G","H","I",
@@ -99,14 +99,21 @@ function Start-WeaselProgram {
 
         if ($InputString.Length -ne $OutputString.Length) {
             Write-Error -Message "The specified InputString needs to be the same length as the OutputString."
-            return
+            
+            #returning in the begin block still results in the process block running, so set a variable return = true, 
+            #to return the function at the beginning of the process block.
+            $return = $true
         }
 
         $InputString  = $InputString.ToUpper()
         $OutputString = $OutputString.ToUpper()
     }
 
-    Process {
+    process {
+        if ($return) {
+            return
+        }
+
         do {
            [Array] $reproductionArrayInput   = @()
            [Array] $reproductionArrayHolding = @()
@@ -117,7 +124,7 @@ function Start-WeaselProgram {
             do {
                 [Array] $reproductionArrayInput += $InputString
             }
-            until (($reproductionArrayInput | Measure-Object | Select-Object -ExpandProperty Count) -eq $ReproductionsCount)
+            until (($reproductionArrayInput | Measure-Object | Select-Object -ExpandProperty 'Count') -eq $ReproductionsCount)
 
             #endregion
 
@@ -188,7 +195,7 @@ function Start-WeaselProgram {
         until ($InputString -eq $OutputString)
     }
 
-    End {
+    end {
 
     }
 
