@@ -1,0 +1,30 @@
+[
+    {
+        "Name": "Boston",
+        "Country": "USA",
+        "Locations": [
+            "Roxbury",
+            "Quincy",
+            "Brighton",
+            "Dorchester",
+            "Allston",
+            "Chinatown"
+        ],
+        "Airport": "Logan Int'l",
+        "Transportation": "The T"
+    },
+
+    {
+        "Name": "New York",
+        "Country": "USA",
+        "Locations": [
+            "Bronx",
+            "Manhattan",
+            "Queens",
+            "Staten Island",
+            "Brooklyn"
+        ],
+        "Airport": "John F. Kennedy",
+        "Transportation": "Subway"
+    }
+]

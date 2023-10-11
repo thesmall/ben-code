@@ -1,0 +1,221 @@
+[
+    {
+        "Name":              "Acid",
+        "LowerBound":        1000,
+        "UpperBound":        4200,
+
+        "CrashLowerBound":   110,
+        "CrashUpperBound":   400,
+        "ChanceCrash":       0.05,
+
+        "SpikeLowerBound":   "N/A",
+        "SpikeUpperBound":   "N/A",
+        "ChanceSpike":       0,
+
+        "ChanceNotOnMarket": 0.05,
+        "ChanceNoChange":    0.05
+    },
+
+    {
+        "Name":              "Cocaine",
+        "LowerBound":        15000,
+        "UpperBound":        30000,
+
+        "CrashLowerBound":   "N/A",
+        "CrashUpperBound":   "N/A",
+        "ChanceCrash":       0,
+
+        "SpikeLowerBound":   84000,
+        "SpikeUpperBound":   150000,
+        "ChanceSpike":       0.05,
+        
+        "ChanceNotOnMarket": 0.05,
+        "ChanceNoChange":    0.05
+    },
+
+    {
+        "Name":              "Hashish",
+        "LowerBound":        450,
+        "UpperBound":        1400,
+
+        "CrashLowerBound":   40,
+        "CrashUpperBound":   140,
+        "ChanceCrash":       0.05,
+
+        "SpikeLowerBound":   "N/A",
+        "SpikeUpperBound":   "N/A",
+        "ChanceSpike":       0,
+
+        "ChanceNotOnMarket": 0.05,
+        "ChanceNoChange":    0.05
+    },
+
+    {
+        "Name":              "Heroin",
+        "LowerBound":        5000,
+        "UpperBound":        13000,
+
+        "CrashLowerBound":   "N/A",
+        "CrashUpperBound":   "N/A",
+        "ChanceCrash":       0,
+
+        "SpikeLowerBound":   25000,
+        "SpikeUpperBound":   65000,
+        "ChanceSpike":       0.05,
+        
+        "ChanceNotOnMarket": 0.05,
+        "ChanceNoChange":    0.05
+    },
+
+    {
+        "Name":              "MDMA",
+        "LowerBound":        10,
+        "UpperBound":        60,
+        "CrashLowerBound":   1,
+        "CrashUpperBound":   10,
+        "ChanceCrash":       0.05,
+
+        "SpikeLowerBound":   "N/A",
+        "SpikeUpperBound":   "N/A",
+        "ChanceSpike":       0,
+        
+        "ChanceNotOnMarket": 0.05,
+        "ChanceNoChange":    0.05
+    },
+
+    {
+        "Name":              "Meth",
+        "LowerBound":        1200,
+        "UpperBound":        5000,
+
+        "CrashLowerBound":   "N/A",
+        "CrashUpperBound":   "N/A",
+        "ChanceCrash":       0,
+
+        "SpikeLowerBound":   10000,
+        "SpikeUpperBound":   22000,
+        "ChanceSpike":       0.05,
+        
+        "ChanceNotOnMarket": 0.05,
+        "ChanceNoChange":    0.05
+    },
+
+    {
+        "Name":              "Opium",
+        "LowerBound":        500,
+        "UpperBound":        1200,
+
+        "CrashLowerBound":   "N/A",
+        "CrashUpperBound":   "N/A",
+        "ChanceCrash":       0,
+
+        "SpikeLowerBound":   3600,
+        "SpikeUpperBound":   6000,
+        "ChanceSpike":       0.05,
+        
+        "ChanceNotOnMarket": 0.05,
+        "ChanceNoChange":    0.05
+    },
+
+    {
+        "Name":              "Crack",
+        "LowerBound":        1000,
+        "UpperBound":        3000,
+
+        "CrashLowerBound":   100,
+        "CrashUpperBound":   250,
+        "ChanceCrash":       0.05,
+
+        "SpikeLowerBound":   "N/A",
+        "SpikeUpperBound":   "N/A",
+        "ChanceSpike":       0,
+        
+        "ChanceNotOnMarket": 0.05,
+        "ChanceNoChange":    0.05
+    },
+
+    {
+        "Name":              "Peyote",
+        "LowerBound":        200,
+        "UpperBound":        600,
+
+        "CrashLowerBound":   "N/A",
+        "CrashUpperBound":   "N/A",
+        "ChanceCrash":       0,
+
+        "SpikeLowerBound":   "N/A",
+        "SpikeUpperBound":   "N/A",
+        "ChanceSpike":       0,
+        
+        "ChanceNotOnMarket": 0.05,
+        "ChanceNoChange":    0.05
+    },
+
+    {
+        "Name":              "Shrooms",
+        "LowerBound":        600,
+        "UpperBound":        1400,
+
+        "CrashLowerBound":   "N/A",
+        "CrashUpperBound":   "N/A",
+        "ChanceCrash":       0,
+
+        "SpikeLowerBound":   "N/A",
+        "SpikeUpperBound":   "N/A",
+        "ChanceSpike":       0,
+        
+        "ChanceNotOnMarket": 0.05,
+        "ChanceNoChange":    0.05
+    },
+
+    {
+        "Name":              "Speed",
+        "LowerBound":        70,
+        "UpperBound":        250,
+
+        "CrashLowerBound":   "N/A",
+        "CrashUpperBound":   "N/A",
+        "ChanceCrash":       0,
+
+        "SpikeLowerBound":   350,
+        "SpikeUpperBound":   1300,
+        "ChanceSpike":       0.05,
+        
+        "ChanceNotOnMarket": 0.05,
+        "ChanceNoChange":    0.05
+    },
+
+    {
+        "Name":              "Weed",
+        "LowerBound":        300,
+        "UpperBound":        800,
+
+        "CrashLowerBound":   60,
+        "CrashUpperBound":   150,
+        "ChanceCrash":       0.05,
+
+        "SpikeLowerBound":   "N/A",
+        "SpikeUpperBound":   "N/A",
+        "ChanceSpike":       0,
+        
+        "ChanceNotOnMarket": 0.05,
+        "ChanceNoChange":    0.05
+    },
+
+    {
+        "Name":              "Special K",
+        "LowerBound":        500,
+        "UpperBound":        1400,
+
+        "CrashLowerBound":   "N/A",
+        "CrashUpperBound":   "N/A",
+        "ChanceCrash":       0,
+        
+        "SpikeLowerBound":   1100,
+        "SpikeUpperBound":   7200,
+        "ChanceSpike":       0.05,
+        
+        "ChanceNotOnMarket": 0.05,
+        "ChanceNoChange":    0.05
+    }
+]

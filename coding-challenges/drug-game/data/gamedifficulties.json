@@ -1,0 +1,74 @@
+[
+    {
+        "Difficulty": "Basic",
+        "StartingCash": 2000,
+        "StartingDebt": 0,
+        "StartingDebtFrom": "",
+        "PoliceFrequency": "Rare", 
+        "Prices": "Normal+Hints", 
+        "PriceEvents": "Normal",
+        "Weapons": [
+            {
+                "Weapon": {
+                    "Name": "Badger",
+                    "ScareChance": 20
+                },
+                "Ammo": {
+                    "Name": "Honey",
+                    "Amount": 10
+                }
+            }
+        ]
+    },
+    {
+        "Difficulty": "Easy",
+        "StartingCash": 2000,
+        "StartingDebt": 5500,
+        "StartingDebtFrom": "Sketchy Sarah",
+        "PoliceFrequency": "Occasional", 
+        "Prices": "Normal+Hints", 
+        "PriceEvents": "Normal",
+        "Weapons": [
+            {
+                "Weapon": {
+                    "Name": "Peanut Shooter",
+                    "ScareChance": 10
+                },
+                "Ammo": {
+                    "Name": "Peanut",
+                    "Amount": 5
+                }
+            }
+        ] 
+    },
+    {
+        "Difficulty": "Normal",
+        "StartingCash": 2000,
+        "StartingDebt": 5500,
+        "StartingDebtFrom": "Dishonest Don",
+        "PoliceFrequency": "Normal", 
+        "Prices": "Normal", 
+        "PriceEvents": "Normal",
+        "Weapons": [] 
+    },
+    {
+        "Difficulty": "Hard",
+        "StartingCash": 2000,
+        "StartingDebt": 5500,
+        "StartingDebtFrom": "Dishonest Don",
+        "PoliceFrequency": "Aggressive", 
+        "Prices": "Random", 
+        "PriceEvents": "Random",
+        "Weapons": []
+    },
+    {
+        "Difficulty": "Insane",
+        "StartingCash": 2000,
+        "StartingDebt": 6500,
+        "StartingDebtFrom": "Dishonest Don",
+        "PoliceFrequency": "Insane", 
+        "Prices": "Random", 
+        "PriceEvents": "Random",
+        "Weapons": []
+    }
+]

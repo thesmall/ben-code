@@ -94,7 +94,9 @@ $modulesToImport = @(
     'C:\working\git\PowerShell\powershellUtils\powershellUtils.psd1'
 )
 
-$scriptsToImport = @()
+$scriptsToImport = @(
+    'C:\working\git\PowerShell\ConvertTo-Mkv\ConvertTo-Mkv.ps1'
+)
 
 #Specify any additional module Paths to add to $env:PSModulePath or $env:PATH
 #Warning: Modifying $modulePathAdditions and $execPathAdditions may break your PowerShell Profile.

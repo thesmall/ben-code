@@ -1,0 +1,37 @@
+[
+    {
+        "Name": "Dishonest Don",
+        "DailyRate": 0.15, 
+        "PrepaymentPenaltyRate": 0.0913,
+        "LoanPeriodDays": 10,
+        "LoanGracePeriodDays": 3
+    },
+    {
+        "Name": "Sketchy Sarah",
+        "DailyRate": 0.10, 
+        "PrepaymentPenaltyRate": 0.0913,
+        "LoanPeriodDays": 15,
+        "LoanGracePeriodDays": 3 
+    },
+    {
+        "Name": "Louis the Tank",
+        "DailyRate": 0.20, 
+        "PrepaymentPenaltyRate": 0.0913,
+        "LoanPeriodDays": 7,
+        "LoanGracePeriodDays": 3 
+    },
+    {
+        "Name": "Girthy Gurtrude",
+        "DailyRate": 0.30, 
+        "PrepaymentPenaltyRate": 0.0913,
+        "LoanPeriodDays": 2,
+        "LoanGracePeriodDays": 3 
+    },
+    {
+        "Name": "Mini Mikey",
+        "DailyRate": 0.25, 
+        "PrepaymentPenaltyRate": 0.0913,
+        "LoanPeriodDays": 5,
+        "LoanGracePeriodDays": 3 
+    }
+]
