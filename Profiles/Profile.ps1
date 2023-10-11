@@ -91,12 +91,10 @@ $transcriptRoot = "$working\pstranscripts"
 
 $modulesToImport = @(
     "posh-git"
-    'C:\working\git\PowerShell\powershellUtils\powershellUtils.psd1'
+    'C:\working\git\ben-code\Modules\powershellUtils\powershellUtils.psd1'
 )
 
-$scriptsToImport = @(
-    'C:\working\git\PowerShell\ConvertTo-Mkv\ConvertTo-Mkv.ps1'
-)
+$scriptsToImport = @()
 
 #Specify any additional module Paths to add to $env:PSModulePath or $env:PATH
 #Warning: Modifying $modulePathAdditions and $execPathAdditions may break your PowerShell Profile.
