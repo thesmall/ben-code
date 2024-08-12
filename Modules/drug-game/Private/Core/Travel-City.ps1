@@ -21,6 +21,7 @@ function Travel-City {
         * Old Lady Rant (sometimes useful).
         * Get Chased by police.
         * A loanshark may return from "vacation".
+        * Get beaten up by the loanshark if the debt is due (past grace period).
     #>
 
     Write-Debug "IN: Travel-City"

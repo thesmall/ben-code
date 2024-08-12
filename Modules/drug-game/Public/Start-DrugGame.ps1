@@ -72,8 +72,8 @@ function Start-DrugGame {
         $global:day = 1
 
         #Player Variables
-        $global:health = 100
-        $global:pocketSpaceTotal = 100
+        $global:health              = 100
+        $global:pocketSpaceTotal    = 100
         $global:pocketSpaceConsumed = 0
 
         #Money/Loan Variables

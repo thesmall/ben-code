@@ -66,7 +66,7 @@ Write-Host "****************************************" -ForegroundColor 'Red'
 Write-Host
 
 #Git Name & Email
-$gitName = "Ben Small"
+$gitName  = "Ben Small"
 $gitEmail = "ben.small88@gmail.com"
 
 #Other Git Settings
@@ -353,15 +353,15 @@ function prompt {
 if ($iseStatus) {
     $iseTab = $psISE.CurrentPowerShellTab.DisplayName.Replace(" ",'').Replace("PowerShell","PSTab")
 
-    $transcriptPath = Join-Path $transcriptRoot "$env:USERNAME`_$env:COMPUTERNAME`_ISE-$iseTab`_$(Get-Date -Format yyyy.MM.dd).txt"
+    $transcriptPath = Join-Path $transcriptRoot "$env:USERNAME`_$env:COMPUTERNAME`_$pid`_ISE-$iseTab`_$(Get-Date -Format yyyy.MM.dd)_$pid.txt"
     #Start-Transcript -Path $transcriptPath -Confirm:$false -Append
 }
 elseif ($host.Name -eq "Visual Studio Code Host") {
-    $transcriptPath = Join-Path $transcriptRoot "$env:USERNAME`_$env:COMPUTERNAME`_VSCode_$(Get-Date -Format yyyy.MM.dd).txt"
+    $transcriptPath = Join-Path $transcriptRoot "$env:USERNAME`_$env:COMPUTERNAME`_$pid`_VSCode_$(Get-Date -Format yyyy.MM.dd)_$pid.txt"
     #Start-Transcript -Path $transcriptPath -Confirm:$false -Append
 }
 else {
-    $transcriptPath = Join-Path $transcriptRoot "$env:USERNAME`_$env:COMPUTERNAME`_Console_$(Get-Date -Format yyyy.MM.dd).txt"
+    $transcriptPath = Join-Path $transcriptRoot "$env:USERNAME`_$env:COMPUTERNAME`_$pid`_Console_$(Get-Date -Format yyyy.MM.dd).txt"
     Start-Transcript -Path $transcriptPath -Confirm:$false -Append
 }
 

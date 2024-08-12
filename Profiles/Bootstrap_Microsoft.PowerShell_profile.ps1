@@ -1,2 +1,2 @@
 $global:WorkingPath = "C:\Working"
-. "$global:WorkingPath\git\PowerShell\Profiles\Profile.ps1"
+. "$global:WorkingPath\git\ben-code\Profiles\Profile.ps1"
